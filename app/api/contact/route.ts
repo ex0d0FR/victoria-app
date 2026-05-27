@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     await resend.emails.send({
       from:    "Victoria Reindale Site <noreply@victoriareindalesoprano.com>",
       to:      process.env.CONTACT_EMAIL ?? "victoria@example.com",
-      replyTo: email,
+      reply_to: email,
       subject,
       html,
     });
