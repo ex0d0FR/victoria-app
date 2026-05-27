@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "home":     "Accueil",
+    "about":    "À propos",
+    "services": "Services",
+    "gallery":  "Galerie",
+    "events":   "Événements",
+    "contact":  "Contact"
+  },
+  "hero": {
+    "cta_primary":   "Réserver une prestation",
+    "cta_secondary": "Découvrir"
+  },
+  "about": {
+    "title":    "Victoria Reindale",
+    "subtitle": "Soprano · Artiste Vocale"
+  },
+  "services": {
+    "title":       "Formules & Services",
+    "subtitle":    "Des prestations sur mesure pour chaque occasion",
+    "price_from":  "À partir de",
+    "on_quote":    "Sur devis",
+    "book_now":    "Réserver",
+    "deposit":     "Acompte de réservation"
+  },
+  "gallery": {
+    "title":    "Galerie",
+    "subtitle": "Instants de grâce",
+    "all":      "Tout",
+    "concert":  "Concerts",
+    "wedding":  "Mariages",
+    "portrait": "Portraits",
+    "backstage": "Coulisses"
+  },
+  "events": {
+    "title":    "Événements",
+    "subtitle": "Prochaines apparitions",
+    "private":  "Événement privé",
+    "tickets":  "Billets",
+    "no_events": "Aucun événement à venir pour l'instant."
+  },
+  "contact": {
+    "title":       "Prendre contact",
+    "subtitle":    "Pour une demande de devis ou d'information, écrivez-moi.",
+    "name":        "Votre nom",
+    "email":       "Votre email",
+    "phone":       "Téléphone (optionnel)",
+    "event_type":  "Type d'événement",
+    "event_date":  "Date souhaitée",
+    "message":     "Votre message",
+    "send":        "Envoyer",
+    "sending":     "Envoi en cours…",
+    "success":     "Merci ! Je vous répondrai dans les plus brefs délais.",
+    "error":       "Une erreur est survenue. Veuillez réessayer."
+  },
+  "footer": {
+    "tagline":   "Soprano · Artiste Vocale",
+    "rights":    "Tous droits réservés."
+  },
+  "booking": {
+    "deposit_title":   "Sécuriser votre date",
+    "deposit_desc":    "Versez un acompte pour confirmer votre réservation.",
+    "pay_deposit":     "Payer l'acompte",
+    "cancel":          "Annuler",
+    "success_title":   "Réservation confirmée !",
+    "success_desc":    "Vous recevrez un email de confirmation. À très bientôt !"
+  }
+}

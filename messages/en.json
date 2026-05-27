@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "home":     "Home",
+    "about":    "About",
+    "services": "Services",
+    "gallery":  "Gallery",
+    "events":   "Events",
+    "contact":  "Contact"
+  },
+  "hero": {
+    "cta_primary":   "Book a performance",
+    "cta_secondary": "Discover"
+  },
+  "about": {
+    "title":    "Victoria Reindale",
+    "subtitle": "Soprano · Vocal Artist"
+  },
+  "services": {
+    "title":       "Services & Packages",
+    "subtitle":    "Bespoke musical experiences for every occasion",
+    "price_from":  "From",
+    "on_quote":    "Quote on request",
+    "book_now":    "Book now",
+    "deposit":     "Booking deposit"
+  },
+  "gallery": {
+    "title":    "Gallery",
+    "subtitle": "Moments of grace",
+    "all":      "All",
+    "concert":  "Concerts",
+    "wedding":  "Weddings",
+    "portrait": "Portraits",
+    "backstage": "Backstage"
+  },
+  "events": {
+    "title":    "Events",
+    "subtitle": "Upcoming appearances",
+    "private":  "Private event",
+    "tickets":  "Tickets",
+    "no_events": "No upcoming events at this time."
+  },
+  "contact": {
+    "title":       "Get in touch",
+    "subtitle":    "For a quote or general enquiry, send me a message.",
+    "name":        "Your name",
+    "email":       "Your email",
+    "phone":       "Phone (optional)",
+    "event_type":  "Event type",
+    "event_date":  "Preferred date",
+    "message":     "Your message",
+    "send":        "Send message",
+    "sending":     "Sending…",
+    "success":     "Thank you! I will get back to you shortly.",
+    "error":       "Something went wrong. Please try again."
+  },
+  "footer": {
+    "tagline":   "Soprano · Vocal Artist",
+    "rights":    "All rights reserved."
+  },
+  "booking": {
+    "deposit_title":   "Secure your date",
+    "deposit_desc":    "Pay a deposit to confirm your booking.",
+    "pay_deposit":     "Pay deposit",
+    "cancel":          "Cancel",
+    "success_title":   "Booking confirmed!",
+    "success_desc":    "You will receive a confirmation email. See you soon!"
+  }
+}
