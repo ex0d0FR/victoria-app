@@ -1,12 +1,12 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { client, urlFor } from "@/sanity/client";
-import { EVENTS_QUERY } from "@/sanity/queries";
+import { events } from "@/data/mock";
 import { MapPin, Calendar, Lock, ExternalLink } from "lucide-react";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  unstable_setRequestLocale(locale);
   return { title: locale === "fr" ? "Événements — Victoria Reindale" : "Events — Victoria Reindale" };
 }
 
@@ -17,16 +17,16 @@ type Event = {
   endDate?: string;
   venue?: { name?: string; city?: string; country?: string };
   description?: { fr: string; en: string };
-  image?: object;
+  image?: string;
   ticketUrl?: string;
   isPrivate?: boolean;
 };
 
 export default async function EventsPage({ params: { locale } }: { params: { locale: string } }) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations("events");
   const prefix = locale === "en" ? "/en" : "";
 
-  const events: Event[] = await client.fetch(EVENTS_QUERY).catch(() => []);
   const now = new Date();
 
   const upcoming = events.filter((e) => new Date(e.date) >= now);
@@ -88,7 +88,7 @@ export default async function EventsPage({ params: { locale } }: { params: { loc
         {ev.image && !ev.isPrivate && (
           <div className="relative w-full sm:w-28 aspect-square overflow-hidden img-hover">
             <Image
-              src={urlFor(ev.image).width(200).quality(80).url()}
+              src={ev.image}
               alt={ev.title?.fr ?? ""}
               fill
               className="object-cover"

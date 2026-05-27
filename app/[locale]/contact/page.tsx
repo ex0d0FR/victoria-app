@@ -1,17 +1,17 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
-import { client } from "@/sanity/client";
-import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
+import { settings } from "@/data/mock";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Mail, Phone, Instagram, Youtube } from "lucide-react";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  unstable_setRequestLocale(locale);
   return { title: locale === "fr" ? "Contact — Victoria Reindale" : "Contact — Victoria Reindale" };
 }
 
 export default async function ContactPage({ params: { locale } }: { params: { locale: string } }) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations("contact");
-  const settings = await client.fetch(SITE_SETTINGS_QUERY).catch(() => null);
 
   return (
     <div className="pt-20">

@@ -1,92 +1,23 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
-import { client, urlFor } from "@/sanity/client";
-import { GALLERY_QUERY, VIDEOS_QUERY } from "@/sanity/queries";
+import { galleryItems, videos } from "@/data/mock";
 import { GalleryGrid } from "@/components/sections/GalleryGrid";
 import { YoutubeEmbed } from "@/components/ui/YoutubeEmbed";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  unstable_setRequestLocale(locale);
   return { title: locale === "fr" ? "Galerie — Victoria Reindale" : "Gallery — Victoria Reindale" };
 }
 
-type GalleryImage = {
-  _id: string;
-  image: object;
-  alt: { fr: string; en: string };
-  caption: { fr: string; en: string };
-  category: string;
-};
-
-type Video = {
-  _id: string;
-  title: { fr: string; en: string };
-  youtubeUrl: string;
-  description: { fr: string; en: string };
-};
-
 export default async function GalleryPage({ params: { locale } }: { params: { locale: string } }) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations("gallery");
 
-  const [images, videos]: [GalleryImage[], Video[]] = await Promise.all([
-    client.fetch(GALLERY_QUERY).catch(() => []),
-    client.fetch(VIDEOS_QUERY).catch(() => []),
-  ]);
-
-  // Local fallbacks shown before Sanity is configured
-  const LOCAL_FALLBACKS = [
-    {
-      id: "local-1",
-      src: "/images/victoria-main.png",
-      thumb: "/images/victoria-main.png",
-      alt: locale === "fr" ? "Victoria Reindale — portrait" : "Victoria Reindale — portrait",
-      caption: "",
-      category: "portrait",
-    },
-    {
-      id: "local-2",
-      src: "/images/victoria-gallery-1.png",
-      thumb: "/images/victoria-gallery-1.png",
-      alt: locale === "fr" ? "Victoria Reindale" : "Victoria Reindale",
-      caption: "",
-      category: "portrait",
-    },
-    {
-      id: "local-3",
-      src: "/images/victoria-gallery-2.png",
-      thumb: "/images/victoria-gallery-2.png",
-      alt: locale === "fr" ? "Victoria au piano Steinway" : "Victoria at the Steinway piano",
-      caption: locale === "fr" ? "Au piano" : "At the piano",
-      category: "backstage",
-    },
-    {
-      id: "local-4",
-      src: "/images/victoria-gallery-3.png",
-      thumb: "/images/victoria-gallery-3.png",
-      alt: locale === "fr" ? "Victoria en studio" : "Victoria in studio",
-      caption: locale === "fr" ? "En studio" : "In studio",
-      category: "backstage",
-    },
-    {
-      id: "local-5",
-      src: "/images/victoria-gallery-4.png",
-      thumb: "/images/victoria-gallery-4.png",
-      alt: "Victoria Reindale",
-      caption: "",
-      category: "portrait",
-    },
-  ];
-
-  // Build image data for the client component — use Sanity if available, otherwise locals
-  const galleryItems = images.length > 0
-    ? images.map((img) => ({
-        id: img._id,
-        src: urlFor(img.image).width(1200).quality(85).url(),
-        thumb: urlFor(img.image).width(600).quality(80).url(),
-        alt: img.alt?.[locale as "fr" | "en"] ?? img.alt?.fr ?? "",
-        caption: img.caption?.[locale as "fr" | "en"] ?? img.caption?.fr ?? "",
-        category: img.category ?? "portrait",
-      }))
-    : LOCAL_FALLBACKS;
+  const localizedItems = galleryItems.map(item => ({
+    ...item,
+    alt: item.alt[locale as "fr" | "en"] || item.alt.fr,
+    caption: item.caption[locale as "fr" | "en"] || item.caption.fr,
+  }));
 
   return (
     <div className="pt-20">
@@ -102,7 +33,7 @@ export default async function GalleryPage({ params: { locale } }: { params: { lo
       {/* Photos */}
       <section className="section-padding bg-cream-50 pt-0">
         <div className="container-wide">
-          <GalleryGrid items={galleryItems} locale={locale} />
+          <GalleryGrid items={localizedItems} locale={locale} />
         </div>
       </section>
 

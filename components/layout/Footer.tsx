@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Instagram, Youtube, Facebook, Mail, Phone } from "lucide-react";
-import { client } from "@/sanity/client";
-import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
+import { settings } from "@/data/mock";
 
 export async function Footer({ locale }: { locale: string }) {
   const t = await getTranslations("footer");
   const tNav = await getTranslations("nav");
 
-  const settings = await client.fetch(SITE_SETTINGS_QUERY).catch(() => null);
+
   const prefix = locale === "en" ? "/en" : "";
   const year = new Date().getFullYear();
 

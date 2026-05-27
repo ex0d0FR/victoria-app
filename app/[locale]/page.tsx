@@ -1,33 +1,21 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
-import { client, urlFor } from "@/sanity/client";
-import {
-  SITE_SETTINGS_QUERY,
-  UPCOMING_EVENTS_QUERY,
-  SERVICES_QUERY,
-  TESTIMONIALS_QUERY,
-  VIDEOS_QUERY,
-} from "@/sanity/queries";
+import { settings, events, services, testimonials, videos } from "@/data/mock";
 import { YoutubeEmbed } from "@/components/ui/YoutubeEmbed";
 import { ChevronDown } from "lucide-react";
 
 export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
+  unstable_setRequestLocale(locale);
   const t   = await getTranslations("hero");
   const tS  = await getTranslations("services");
   const tE  = await getTranslations("events");
   const prefix = locale === "en" ? "/en" : "";
 
-  const [settings, events, services, testimonials, videos] = await Promise.all([
-    client.fetch(SITE_SETTINGS_QUERY).catch(() => null),
-    client.fetch(UPCOMING_EVENTS_QUERY).catch(() => []),
-    client.fetch(SERVICES_QUERY).catch(() => []),
-    client.fetch(TESTIMONIALS_QUERY).catch(() => []),
-    client.fetch(VIDEOS_QUERY).catch(() => []),
-  ]);
+  // Static mock data replaces Sanity API calls
 
-  const heroTitle    = settings?.heroTitle?.[locale]    ?? "Victoria Reindale";
-  const heroSubtitle = settings?.heroSubtitle?.[locale] ?? "Soprano · Artiste Vocale";
+  const heroTitle    = settings?.heroTitle?.[locale as "fr" | "en"]    ?? "Victoria Reindale";
+  const heroSubtitle = settings?.heroSubtitle?.[locale as "fr" | "en"] ?? "Soprano · Artiste Vocale";
 
   return (
     <>
@@ -42,11 +30,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
           overflow-hidden
         ">
           <Image
-            src={
-              settings?.heroImage
-                ? urlFor(settings.heroImage).width(1200).quality(90).url()
-                : "/images/victoria-main.png"
-            }
+            src={settings?.heroImage || "/images/victoria-main.png"}
             alt={heroTitle}
             fill
             priority
@@ -141,11 +125,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
 
           <div className="order-1 lg:order-2 relative aspect-[3/4] overflow-hidden img-hover">
             <Image
-              src={
-                settings?.bioPhoto
-                  ? urlFor(settings.bioPhoto).width(800).quality(85).url()
-                  : "/images/victoria-gallery-3.png"
-              }
+              src={settings?.bioPhoto || "/images/victoria-gallery-3.png"}
               alt="Victoria Reindale"
               fill
               className="object-cover object-center"

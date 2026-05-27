@@ -1,12 +1,12 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { client } from "@/sanity/client";
-import { SERVICES_QUERY } from "@/sanity/queries";
+import { services } from "@/data/mock";
 import { BookingButton } from "@/components/ui/BookingButton";
 import { Check } from "lucide-react";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  unstable_setRequestLocale(locale);
   return {
     title: locale === "fr" ? "Services & Formules — Victoria Reindale" : "Services — Victoria Reindale",
   };
@@ -24,9 +24,9 @@ type Service = {
 };
 
 export default async function ServicesPage({ params: { locale } }: { params: { locale: string } }) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations("services");
   const prefix = locale === "en" ? "/en" : "";
-  const services: Service[] = await client.fetch(SERVICES_QUERY).catch(() => []);
 
   return (
     <div className="pt-20">

@@ -1,12 +1,11 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { client, urlFor } from "@/sanity/client";
-import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
-import { PortableText } from "@portabletext/react";
+import { settings } from "@/data/mock";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  unstable_setRequestLocale(locale);
   return {
     title: locale === "fr" ? "À propos — Victoria Reindale" : "About — Victoria Reindale",
     description: locale === "fr"
@@ -16,9 +15,9 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 }
 
 export default async function AboutPage({ params: { locale } }: { params: { locale: string } }) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations("about");
   const prefix = locale === "en" ? "/en" : "";
-  const settings = await client.fetch(SITE_SETTINGS_QUERY).catch(() => null);
 
   const bio = locale === "fr" ? settings?.biographyFr : settings?.biographyEn;
 
@@ -41,11 +40,7 @@ export default async function AboutPage({ params: { locale } }: { params: { loca
             <div className="relative aspect-[3/4] overflow-hidden img-hover">
               {/* Sanity image when configured, otherwise local B&W piano portrait */}
               <Image
-                src={
-                  settings?.bioPhoto
-                    ? urlFor(settings.bioPhoto).width(800).quality(85).url()
-                    : "/images/victoria-gallery-2.png"
-                }
+                src={settings?.bioPhoto || "/images/victoria-gallery-2.png"}
                 alt="Victoria Reindale"
                 fill
                 className="object-cover object-top"
@@ -61,7 +56,7 @@ export default async function AboutPage({ params: { locale } }: { params: { loca
               <div className="prose prose-lg max-w-none font-sans text-ink-700
                 prose-headings:font-serif prose-headings:font-normal
                 prose-p:leading-relaxed prose-p:text-ink-600">
-                <PortableText value={bio} />
+                <p>{bio}</p>
               </div>
             ) : (
               <div className="space-y-4 text-ink-600 leading-relaxed">
