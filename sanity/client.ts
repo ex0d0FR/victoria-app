@@ -20,7 +20,7 @@
 
 export const client = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  fetch: async (_query: string) => null,
+  fetch: async (_query: string): Promise<any> => null,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
