@@ -84,10 +84,15 @@ export async function Footer({ locale }: { locale: string }) {
 
         <div className="mt-12 pt-8 border-t border-ink-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-ink-500">
           <p>© {year} Victoria Reindale. {t("rights")}</p>
-          <p>
-            Site réalisé avec ♥ par{" "}
-            <a href="https://github.com/engadi" className="hover:text-ink-300 transition-colors">
-              Luis
+          <p className="text-base text-cream-50">
+            Developed with ❤️ by{" "}
+            <a 
+              href="https://engadi.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="font-medium text-gold-400 hover:text-gold-300 transition-colors underline underline-offset-4"
+            >
+              engadi.com
             </a>
           </p>
         </div>
