@@ -82,9 +82,9 @@ export async function Footer({ locale }: { locale: string }) {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-ink-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-ink-500">
+        <div className="mt-12 pt-8 border-t border-ink-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-base text-cream-50">
           <p>© {year} Victoria Reindale. {t("rights")}</p>
-          <p className="text-base text-cream-50">
+          <p>
             Developed with ❤️ by{" "}
             <a 
               href="https://engadi.com" 
