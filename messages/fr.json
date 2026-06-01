@@ -64,5 +64,31 @@
     "cancel":          "Annuler",
     "success_title":   "Réservation confirmée !",
     "success_desc":    "Vous recevrez un email de confirmation. À très bientôt !"
+  },
+  "payment": {
+    "title": "Réservation & Paiement Sécurisé",
+    "subtitle": "Confirmez votre formule ou effectuez un règlement",
+    "summary_title": "Récapitulatif du règlement",
+    "service": "Formule",
+    "amount": "Montant de l'acompte",
+    "general": "Règlement général / Facture",
+    "choose_method": "Choisissez votre moyen de paiement",
+    "method_paypal": "PayPal (Instantané)",
+    "method_bank": "Virement Bancaire (IBAN)",
+    "paypal_desc": "Scannez le code QR ci-dessous avec l'appareil photo de votre téléphone ou l'application PayPal pour régler instantanément.",
+    "paypal_cta": "Ouvrir l'application PayPal",
+    "bank_desc": "Veuillez effectuer un virement bancaire en utilisant les coordonnées ci-dessous. Les virements prennent généralement 1 à 2 jours ouvrés.",
+    "bank_owner": "Titulaire du compte",
+    "bank_iban": "IBAN",
+    "bank_bic": "BIC",
+    "bank_name": "Établissement",
+    "bank_address": "Adresse de la banque",
+    "bank_reference": "Libellé du virement",
+    "bank_reference_val": "ACOMPTE",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "confirm_title": "Paiement effectué ?",
+    "confirm_desc": "Dès que vous avez validé votre virement ou scan, écrivez-moi un message via le formulaire de contact avec votre nom et la date pour que je puisse confirmer définitivement votre réservation.",
+    "general_desc": "Si vous réglez une facture ou effectuez un paiement sur mesure, vous pouvez utiliser les mêmes coordonnées de virement ou scanner le QR code ci-dessus. Précisez votre numéro de facture ou votre nom complet dans le libellé."
   }
 }

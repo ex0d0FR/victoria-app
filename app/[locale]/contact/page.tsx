@@ -2,7 +2,8 @@ import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { settings } from "@/data/mock";
 import { ContactForm } from "@/components/sections/ContactForm";
-import { Mail, Phone, Instagram, Youtube } from "lucide-react";
+import { Mail, Phone, Instagram, Youtube, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   unstable_setRequestLocale(locale);
@@ -12,6 +13,7 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 export default async function ContactPage({ params: { locale } }: { params: { locale: string } }) {
   unstable_setRequestLocale(locale);
   const t = await getTranslations("contact");
+  const prefix = locale === "en" ? "/en" : "";
 
   return (
     <div className="pt-20">
@@ -73,6 +75,27 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
                   ? "Je réponds généralement sous 24–48h. Pour les événements proches, n'hésitez pas à m'appeler directement."
                   : "I typically respond within 24–48 hours. For upcoming events, feel free to call me directly."}
               </p>
+            </div>
+
+            {/* Secure payment link callout */}
+            <div className="p-5 border border-gold-400/30 bg-gold-50/20 space-y-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-gold-600 mb-1">
+                  {locale === "fr" ? "💳 Paiement Sécurisé" : "💳 Secure Payment"}
+                </p>
+                <p className="text-xs text-ink-600 leading-relaxed">
+                  {locale === "fr"
+                    ? "Vous devez verser un acompte de réservation ou régler une facture ?"
+                    : "Need to make a booking deposit or settle a custom invoice?"}
+                </p>
+              </div>
+              <Link
+                href={`${prefix}/payment`}
+                className="text-xs font-semibold text-gold-600 hover:text-gold-700 underline flex items-center gap-1 group w-fit"
+              >
+                {locale === "fr" ? "Accéder à l'espace de paiement sécurisé" : "Go to secure payment instructions"}
+                <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+              </Link>
             </div>
           </div>
 

@@ -8,13 +8,13 @@ type Props = {
   locale:        string;
 };
 
-export function BookingButton({ depositAmount, locale }: Props) {
+export function BookingButton({ serviceId, depositAmount, locale }: Props) {
   const t = useTranslations("booking");
   const prefix = locale === "en" ? "/en" : "";
 
   return (
     <Link
-      href={`${prefix}/contact`}
+      href={`${prefix}/payment?serviceId=${serviceId}&amount=${depositAmount}`}
       className="btn-gold text-center text-xs justify-center flex"
     >
       {`${t("pay_deposit")} (${depositAmount} €)`}

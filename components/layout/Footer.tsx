@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { Instagram, Youtube, Facebook, Mail, Phone } from "lucide-react";
+import { Instagram, Youtube, Mail, Phone } from "lucide-react";
 import { settings } from "@/data/mock";
 
 export async function Footer({ locale }: { locale: string }) {
@@ -32,13 +32,6 @@ export async function Footer({ locale }: { locale: string }) {
                    aria-label="YouTube"
                    className="text-ink-300 hover:text-gold-400 transition-colors">
                   <Youtube size={18} />
-                </a>
-              )}
-              {settings?.socialFacebook && (
-                <a href={settings.socialFacebook} target="_blank" rel="noopener noreferrer"
-                   aria-label="Facebook"
-                   className="text-ink-300 hover:text-gold-400 transition-colors">
-                  <Facebook size={18} />
                 </a>
               )}
             </div>

@@ -11,11 +11,10 @@ export const settings = {
   bioPhoto: "/images/victoria-gallery-2.png",
   biographyFr: "Victoria Reindale est une soprano professionnelle dont la voix lyrique légère enchante cérémonies, concerts privés et événements d'exception. Formée au conservatoire, elle propose des formations allant du solo soprano jusqu'à l'ensemble vocal SATB, s'adaptant à chaque occasion avec raffinement.",
   biographyEn: "Victoria Reindale is a professional soprano whose light lyric voice enchants ceremonies, private concerts, and exceptional events. Trained at the conservatory, she offers formations ranging from solo soprano to SATB vocal ensemble, adapting to each occasion with refinement.",
-  email: "victoria@victoriareindalesoprano.com",
-  phone: "+33 6 12 34 56 78",
+  email: "contact@victoriareindale.com",
+  phone: "+41 77 814 56 18",
   socialInstagram: "https://instagram.com/victoria_soprano_leggero",
-  socialYoutube: "https://youtube.com",
-  socialFacebook: "https://facebook.com",
+  socialYoutube: "https://www.youtube.com/@VictoriaReindaleSoprano",
 };
 
 export const events = [
@@ -121,17 +120,42 @@ export const testimonials = [
 export const videos = [
   {
     _id: "v1",
-    title: { fr: "Ave Maria - Schubert", en: "Ave Maria - Schubert" },
-    description: { fr: "Enregistrement studio, 2023", en: "Studio recording, 2023" },
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    title: { 
+      fr: 'Gaetano Donizetti — Lucia di Lammermoor : "Ardon gli incensi"', 
+      en: 'Gaetano Donizetti — Lucia di Lammermoor: "Ardon gli incensi"' 
+    },
+    description: { 
+      fr: "Victoria Vichkutkina, soprano, accompagnée au piano par Simon Peguiron.", 
+      en: "Victoria Vichkutkina, soprano, accompanied on piano by Simon Peguiron." 
+    },
+    youtubeUrl: "https://youtu.be/JV73Mt2xk8A",
   },
   {
     _id: "v2",
-    title: { fr: "O Mio Babbino Caro - Puccini", en: "O Mio Babbino Caro - Puccini" },
-    description: { fr: "Concert en direct", en: "Live concert" },
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    title: { 
+      fr: 'Ambroise Thomas — Mignon : "Je suis Titania la blonde"', 
+      en: 'Ambroise Thomas — Mignon: "Je suis Titania la blonde"' 
+    },
+    description: { 
+      fr: "Prestation lyrique en direct. Victoria Vichkutkina, soprano.", 
+      en: "Live lyric performance. Victoria Vichkutkina, soprano." 
+    },
+    youtubeUrl: "https://youtu.be/eJMdzqiQIrI",
+  },
+  {
+    _id: "v3",
+    title: { 
+      fr: 'Gioachino Rossini — Le Comte Ory : "Céleste Providence"', 
+      en: 'Gioachino Rossini — Le Comte Ory: "Céleste Providence"' 
+    },
+    description: { 
+      fr: "Duo lyrique. Victoria Vichkutkina, soprano, avec Vitor Zendron da Cunha au piano.", 
+      en: "Lyric duo. Victoria Vichkutkina, soprano, with Vitor Zendron da Cunha on piano." 
+    },
+    youtubeUrl: "https://youtu.be/Qb9vRK92u2U",
   }
 ];
+
 
 export const galleryItems = [
   {

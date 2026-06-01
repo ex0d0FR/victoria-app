@@ -64,5 +64,31 @@
     "cancel":          "Cancel",
     "success_title":   "Booking confirmed!",
     "success_desc":    "You will receive a confirmation email. See you soon!"
+  },
+  "payment": {
+    "title": "Secure Booking & Payments",
+    "subtitle": "Complete your booking or settle an invoice",
+    "summary_title": "Payment Summary",
+    "service": "Service",
+    "amount": "Deposit Amount",
+    "general": "General Payment / Settle Invoice",
+    "choose_method": "Choose your payment method",
+    "method_paypal": "PayPal (Instant)",
+    "method_bank": "Bank Transfer (IBAN)",
+    "paypal_desc": "Scan the QR code below using your phone camera or PayPal app to transfer the payment instantly.",
+    "paypal_cta": "Open PayPal App",
+    "bank_desc": "Please make a wire transfer using the bank details below. Deposits are typically cleared in 1-2 business days.",
+    "bank_owner": "Account Owner",
+    "bank_iban": "IBAN",
+    "bank_bic": "BIC",
+    "bank_name": "Bank Name",
+    "bank_address": "Bank Address",
+    "bank_reference": "Required Reference",
+    "bank_reference_val": "DEPOSIT",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "confirm_title": "Done making your payment?",
+    "confirm_desc": "Once you have completed the transfer or scanned the QR code, send a quick message via the contact form with your name and date so I can verify and secure your booking.",
+    "general_desc": "If you are settling an invoice or making a custom payment, please use the same bank transfer details or scan the QR code above. In the transfer reference, specify your invoice number or full name."
   }
 }
