@@ -1,7 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"main": ".open-next/worker.js",
 	"name": "victoria-app",
+	"main": ".open-next/worker.js",
 	"compatibility_date": "2026-09-15",
 	"compatibility_flags": [
 		"nodejs_compat",
@@ -16,5 +16,8 @@
 			"binding": "WORKER_SELF_REFERENCE",
 			"service": "victoria-app"
 		}
-	]
+	],
+	"build": {
+		"command": "npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion"
+	}
 }
