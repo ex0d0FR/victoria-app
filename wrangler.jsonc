@@ -19,5 +19,10 @@
 	],
 	"build": {
 		"command": "npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion"
+	},
+	"vars": {
+		"NEXT_PUBLIC_SANITY_PROJECT_ID": "22uqjt5h",
+		"NEXT_PUBLIC_SANITY_DATASET": "production",
+		"NEXT_PUBLIC_SANITY_API_VERSION": "2024-01-01"
 	}
 }
