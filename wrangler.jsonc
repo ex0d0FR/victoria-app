@@ -18,7 +18,7 @@
 		}
 	],
 	"build": {
-		"command": "npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion"
+		"command": "npm run build:worker"
 	},
 	"vars": {
 		"NEXT_PUBLIC_SANITY_PROJECT_ID": "22uqjt5h",
