@@ -1,0 +1,32 @@
+name: Daily Past Events Cleanup
+
+on:
+  schedule:
+    # Runs every day at 03:00 AM UTC
+    - cron: '0 3 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cleanup Endpoint
+        run: |
+          SITE_URL="https://victoriareindalesoprano.com"
+          SECRET="4893f0e062252335da501a00e277e523e84381b731e9b8f21fd9bd2161243f7b"
+          
+          echo "Triggering past events cleanup for $SITE_URL..."
+          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -H "Authorization: Bearer $SECRET" "$SITE_URL/api/cron/cleanup-events")
+          
+          HTTP_BODY=$(echo "$RESPONSE" | sed -e 's/HTTP_STATUS\:.*//g')
+          HTTP_STATUS=$(echo "$RESPONSE" | tr -d '\n' | sed -e 's/.*HTTP_STATUS://')
+          
+          echo "Response body: $HTTP_BODY"
+          echo "HTTP status: $HTTP_STATUS"
+          
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "Cleanup failed with HTTP status $HTTP_STATUS"
+            exit 1
+          fi
+          
+          echo "Cleanup completed successfully!"
