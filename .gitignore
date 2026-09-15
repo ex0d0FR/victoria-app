@@ -8,6 +8,8 @@ node_modules/
 out/
 dist/
 build/
+.open-next/
+.wrangler/
 
 # Environment variables — NEVER commit these
 .env
