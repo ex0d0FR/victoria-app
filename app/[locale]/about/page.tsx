@@ -2,7 +2,7 @@ import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { settings } from "@/data/mock";
+import { getSettings } from "@/sanity/lib/fetch";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   unstable_setRequestLocale(locale);
@@ -19,7 +19,9 @@ export default async function AboutPage({ params: { locale } }: { params: { loca
   const t = await getTranslations("about");
   const prefix = locale === "en" ? "/en" : "";
 
-  const bio = locale === "fr" ? settings?.biographyFr : settings?.biographyEn;
+  const settings = await getSettings();
+  const bio = settings?.biography?.[locale as "fr" | "en"] ||
+    (locale === "fr" ? (settings as any)?.biographyFr : (settings as any)?.biographyEn);
 
   return (
     <div className="pt-20">
@@ -38,7 +40,6 @@ export default async function AboutPage({ params: { locale } }: { params: { loca
           {/* Photo */}
           <div className="lg:col-span-2">
             <div className="relative aspect-[3/4] overflow-hidden img-hover">
-              {/* Sanity image when configured, otherwise local B&W piano portrait */}
               <Image
                 src={settings?.bioPhoto || "/images/victoria-gallery-2.png"}
                 alt="Victoria Reindale"
@@ -55,7 +56,7 @@ export default async function AboutPage({ params: { locale } }: { params: { loca
             {bio ? (
               <div className="prose prose-lg max-w-none font-sans text-ink-700
                 prose-headings:font-serif prose-headings:font-normal
-                prose-p:leading-relaxed prose-p:text-ink-600">
+                prose-p:leading-relaxed prose-p:text-ink-600 whitespace-pre-line">
                 <p>{bio}</p>
               </div>
             ) : (

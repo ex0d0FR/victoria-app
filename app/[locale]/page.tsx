@@ -1,21 +1,29 @@
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
-import { settings, events, services, testimonials, videos } from "@/data/mock";
+import { getSettings, getEvents, getServices, getTestimonials, getVideos } from "@/sanity/lib/fetch";
 import { YoutubeEmbed } from "@/components/ui/YoutubeEmbed";
 import { ChevronDown } from "lucide-react";
 
 export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
   unstable_setRequestLocale(locale);
-  const t   = await getTranslations("hero");
-  const tS  = await getTranslations("services");
-  const tE  = await getTranslations("events");
+  const t = await getTranslations("hero");
+  const tS = await getTranslations("services");
+  const tE = await getTranslations("events");
   const prefix = locale === "en" ? "/en" : "";
 
-  // Static mock data replaces Sanity API calls
+  const [settings, events, services, testimonials, videos] = await Promise.all([
+    getSettings(),
+    getEvents(),
+    getServices(),
+    getTestimonials(),
+    getVideos(),
+  ]);
 
-  const heroTitle    = settings?.heroTitle?.[locale as "fr" | "en"]    ?? "Victoria Reindale";
+  const heroTitle = settings?.heroTitle?.[locale as "fr" | "en"] ?? "Victoria Reindale";
   const heroSubtitle = settings?.heroSubtitle?.[locale as "fr" | "en"] ?? "Soprano · Artiste Vocale";
+  const now = new Date();
+  const upcomingEvents = (events || []).filter((e) => new Date(e.date) >= now);
 
   return (
     <>
@@ -79,14 +87,14 @@ export default async function HomePage({ params: { locale } }: { params: { local
       </section>
 
       {/* ── UPCOMING EVENTS STRIP ─────────────────────────────── */}
-      {events?.length > 0 && (
+      {upcomingEvents.length > 0 && (
         <section className="bg-cream-200 border-y border-cream-300 overflow-hidden">
           <div className="container-wide px-6 md:px-12 lg:px-20 py-5 flex items-center gap-6">
             <span className="label-sm text-gold-600 whitespace-nowrap shrink-0">{tE("subtitle")}</span>
             <div className="flex gap-8 overflow-x-auto no-scrollbar">
-              {events.map((ev: { _id: string; title: { fr: string; en: string }; date: string; venue?: { city?: string }; isPrivate?: boolean }) => (
+              {upcomingEvents.map((ev) => (
                 <div key={ev._id} className="flex items-center gap-3 shrink-0">
-                  <span className="text-gold-600 font-serif text-sm">
+                  <span className="text-gold-600 font-serif text-sm font-medium">
                     {new Date(ev.date).toLocaleDateString(locale === "fr" ? "fr-FR" : "en-GB", {
                       day: "2-digit", month: "short",
                     })}
@@ -114,9 +122,10 @@ export default async function HomePage({ params: { locale } }: { params: { local
                 : "A voice for every precious moment"}
             </h2>
             <p className="text-ink-500 leading-relaxed mb-8 max-w-lg">
-              {locale === "fr"
-                ? "Soprano lyrique légère, Victoria Reindale propose des prestations musicales raffinées pour vos cérémonies de mariage, concerts privés et événements d'exception."
-                : "Lyric soprano, Victoria Reindale offers refined musical performances for wedding ceremonies, private concerts and exclusive events."}
+              {settings?.biography?.[locale as "fr" | "en"] ??
+                (locale === "fr"
+                  ? "Soprano lyrique légère, Victoria Reindale propose des prestations musicales raffinées pour vos cérémonies de mariage, concerts privés et événements d'exception."
+                  : "Lyric soprano, Victoria Reindale offers refined musical performances for wedding ceremonies, private concerts and exclusive events.")}
             </p>
             <Link href={`${prefix}/about`} className="btn-outline">
               {locale === "fr" ? "En savoir plus" : "Learn more"}
@@ -145,13 +154,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
               <h2 className="heading-lg">{tS("subtitle")}</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.slice(0, 6).map((s: {
-                _id: string;
-                title: { fr: string; en: string };
-                description: { fr: string; en: string };
-                priceFrom?: number;
-                depositAmount?: number;
-              }) => (
+              {services.slice(0, 6).map((s: any) => (
                 <div key={s._id} className="card-border p-8 group">
                   <h3 className="heading-md mb-3">
                     {s.title?.[locale as "fr" | "en"] ?? s.title?.fr}
@@ -185,12 +188,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
             </p>
             <div className="divider-gold mx-auto bg-gold-400" />
             <div className="mt-10 space-y-14">
-              {testimonials.slice(0, 2).map((tm: {
-                _id: string;
-                quote: { fr: string; en: string };
-                author: string;
-                occasion: { fr: string; en: string };
-              }) => (
+              {testimonials.slice(0, 2).map((tm: any) => (
                 <blockquote key={tm._id}>
                   <p className="font-serif text-2xl md:text-3xl text-cream-100 leading-relaxed mb-6 italic">
                     &ldquo;{tm.quote?.[locale as "fr" | "en"] ?? tm.quote?.fr}&rdquo;
@@ -218,7 +216,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
               <h2 className="heading-lg">{locale === "fr" ? "Vidéos" : "Videos"}</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {videos.slice(0, 2).map((v: { _id: string; title: { fr: string; en: string }; youtubeUrl: string }) => (
+              {videos.slice(0, 2).map((v: any) => (
                 <div key={v._id}>
                   <YoutubeEmbed url={v.youtubeUrl} title={v.title?.[locale as "fr" | "en"] ?? v.title?.fr} />
                   <p className="mt-3 text-sm text-ink-500">

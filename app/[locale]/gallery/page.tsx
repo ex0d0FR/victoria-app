@@ -1,6 +1,6 @@
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
-import { galleryItems, videos } from "@/data/mock";
+import { getGalleryItems, getVideos } from "@/sanity/lib/fetch";
 import { GalleryGrid } from "@/components/sections/GalleryGrid";
 import { YoutubeEmbed } from "@/components/ui/YoutubeEmbed";
 
@@ -13,10 +13,15 @@ export default async function GalleryPage({ params: { locale } }: { params: { lo
   unstable_setRequestLocale(locale);
   const t = await getTranslations("gallery");
 
-  const localizedItems = galleryItems.map(item => ({
+  const [galleryItems, videos] = await Promise.all([
+    getGalleryItems(),
+    getVideos(),
+  ]);
+
+  const localizedItems = galleryItems.map((item) => ({
     ...item,
-    alt: item.alt[locale as "fr" | "en"] || item.alt.fr,
-    caption: item.caption[locale as "fr" | "en"] || item.caption.fr,
+    alt: item.alt?.[locale as "fr" | "en"] || item.alt?.fr || "Photo",
+    caption: item.caption?.[locale as "fr" | "en"] || item.caption?.fr || "",
   }));
 
   return (
