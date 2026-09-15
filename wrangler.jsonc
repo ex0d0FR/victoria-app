@@ -20,9 +20,6 @@
 	"build": {
 		"command": "npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion"
 	},
-	"triggers": {
-		"crons": ["0 3 * * *"]
-	},
 	"vars": {
 		"NEXT_PUBLIC_SANITY_PROJECT_ID": "22uqjt5h",
 		"NEXT_PUBLIC_SANITY_DATASET": "production",
