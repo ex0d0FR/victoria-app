@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { Instagram, Youtube, Mail, Phone } from "lucide-react";
-import { settings } from "@/data/mock";
+import { Instagram, Youtube, Mail, Phone, Lock } from "lucide-react";
+import { getSettings } from "@/sanity/lib/fetch";
 
 export async function Footer({ locale }: { locale: string }) {
   const t = await getTranslations("footer");
   const tNav = await getTranslations("nav");
-
+  const settings = await getSettings();
 
   const prefix = locale === "en" ? "/en" : "";
   const year = new Date().getFullYear();
@@ -21,16 +21,24 @@ export async function Footer({ locale }: { locale: string }) {
             <p className="label-sm text-gold-400 mb-6">{t("tagline")}</p>
             <div className="flex gap-4">
               {settings?.socialInstagram && (
-                <a href={settings.socialInstagram} target="_blank" rel="noopener noreferrer"
-                   aria-label="Instagram"
-                   className="text-ink-300 hover:text-gold-400 transition-colors">
+                <a
+                  href={settings.socialInstagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="text-ink-300 hover:text-gold-400 transition-colors"
+                >
                   <Instagram size={18} />
                 </a>
               )}
               {settings?.socialYoutube && (
-                <a href={settings.socialYoutube} target="_blank" rel="noopener noreferrer"
-                   aria-label="YouTube"
-                   className="text-ink-300 hover:text-gold-400 transition-colors">
+                <a
+                  href={settings.socialYoutube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                  className="text-ink-300 hover:text-gold-400 transition-colors"
+                >
                   <Youtube size={18} />
                 </a>
               )}
@@ -58,15 +66,19 @@ export async function Footer({ locale }: { locale: string }) {
             <p className="label-sm text-gold-400 mb-5">Contact</p>
             <div className="space-y-3">
               {settings?.email && (
-                <a href={`mailto:${settings.email}`}
-                   className="flex items-center gap-2 text-sm text-ink-300 hover:text-cream-50 transition-colors">
+                <a
+                  href={`mailto:${settings.email}`}
+                  className="flex items-center gap-2 text-sm text-ink-300 hover:text-cream-50 transition-colors"
+                >
                   <Mail size={14} />
                   {settings.email}
                 </a>
               )}
               {settings?.phone && (
-                <a href={`tel:${settings.phone}`}
-                   className="flex items-center gap-2 text-sm text-ink-300 hover:text-cream-50 transition-colors">
+                <a
+                  href={`tel:${settings.phone}`}
+                  className="flex items-center gap-2 text-sm text-ink-300 hover:text-cream-50 transition-colors"
+                >
                   <Phone size={14} />
                   {settings.phone}
                 </a>
@@ -75,14 +87,26 @@ export async function Footer({ locale }: { locale: string }) {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-ink-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-base text-cream-50">
-          <p>© {year} Victoria Reindale. {t("rights")}</p>
+        <div className="mt-12 pt-8 border-t border-ink-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-ink-400">
+          <div className="flex items-center gap-3">
+            <p>© {year} Victoria Reindale. {t("rights")}</p>
+            <span className="text-ink-700">•</span>
+            <Link
+              href="/studio"
+              className="text-ink-600 hover:text-gold-400 transition-colors inline-flex items-center gap-1 text-xs opacity-75 hover:opacity-100"
+              title="Staff CMS Login"
+              aria-label="Staff Login"
+            >
+              <Lock size={12} />
+              <span>Staff Login</span>
+            </Link>
+          </div>
           <p>
             Developed with ❤️ by{" "}
-            <a 
-              href="https://engadi.com" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://engadi.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="font-medium text-gold-400 hover:text-gold-300 transition-colors underline underline-offset-4"
             >
               engadi.com
