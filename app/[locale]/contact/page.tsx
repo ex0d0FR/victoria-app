@@ -1,6 +1,6 @@
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
-import { settings } from "@/data/mock";
+import { getSettings } from "@/sanity/lib/fetch";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Mail, Phone, Instagram, Youtube, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -14,6 +14,8 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
   unstable_setRequestLocale(locale);
   const t = await getTranslations("contact");
   const prefix = locale === "en" ? "/en" : "";
+  const settings = await getSettings();
+  const contactEmail = settings?.email || "contact@victoriareindale.com";
 
   return (
     <div className="pt-20">
@@ -101,7 +103,7 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
 
           {/* Right: form */}
           <div className="lg:col-span-3">
-            <ContactForm locale={locale} />
+            <ContactForm locale={locale} recipientEmail={contactEmail} />
           </div>
         </div>
       </section>

@@ -89,7 +89,7 @@ export const galleryQuery = groq`
 
 // Services Query
 export const servicesQuery = groq`
-  *[_type == "service"] | order(order asc) {
+  *[_type == "service"] | order(order asc, _createdAt asc) {
     _id,
     title,
     description,

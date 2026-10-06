@@ -48,10 +48,15 @@
     "event_type":  "Event type",
     "event_date":  "Preferred date",
     "message":     "Your message",
-    "send":        "Send message",
-    "sending":     "Sending…",
-    "success":     "Thank you! I will get back to you shortly.",
-    "error":       "Something went wrong. Please try again."
+    "send":        "Open in my email app",
+    "sending":     "Preparing…",
+    "success":     "Your message is ready!",
+    "success_desc": "A pre-filled email is opening in your email app. If it did not open automatically, click the button below or copy the text.",
+    "open_client_btn": "Open email app",
+    "copy_btn":    "Copy text",
+    "copied":      "Copied!",
+    "back_btn":    "Edit information",
+    "error":       "Something went wrong. Please check your fields."
   },
   "footer": {
     "tagline":   "Soprano · Vocal Artist",

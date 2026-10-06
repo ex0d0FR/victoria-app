@@ -67,10 +67,11 @@ export type SanityService = {
   _id: string
   title: { fr: string; en: string }
   description?: { fr: string; en: string }
-  occasions?: { fr: string; en: string }
-  duration?: { fr: string; en: string }
+  occasions?: { fr?: string | string[]; en?: string | string[] } | string
+  duration?: { fr?: string; en?: string } | string
   priceFrom?: number
   depositAmount?: number
+  order?: number
 }
 
 export type SanityTestimonial = {
@@ -150,7 +151,7 @@ export async function getGalleryItems(): Promise<any[]> {
   return mockData.galleryItems
 }
 
-export async function getServices(): Promise<any[]> {
+export async function getServices(): Promise<SanityService[]> {
   try {
     const data = await client.fetch<SanityService[]>(
       servicesQuery,
@@ -161,7 +162,7 @@ export async function getServices(): Promise<any[]> {
   } catch (err) {
     console.warn('Failed to fetch services from Sanity, falling back to mock data:', err)
   }
-  return mockData.services
+  return mockData.services as unknown as SanityService[]
 }
 
 export async function getTestimonials(): Promise<SanityTestimonial[]> {

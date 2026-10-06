@@ -48,10 +48,15 @@
     "event_type":  "Type d'événement",
     "event_date":  "Date souhaitée",
     "message":     "Votre message",
-    "send":        "Envoyer",
-    "sending":     "Envoi en cours…",
-    "success":     "Merci ! Je vous répondrai dans les plus brefs délais.",
-    "error":       "Une erreur est survenue. Veuillez réessayer."
+    "send":        "Ouvrir dans ma messagerie",
+    "sending":     "Préparation…",
+    "success":     "Votre message est prêt !",
+    "success_desc": "Un e-mail pré-rempli s'ouvre dans votre application de messagerie. Si rien ne s'ouvre automatiquement, cliquez sur le bouton ci-dessous ou copiez le texte.",
+    "open_client_btn": "Ouvrir ma messagerie",
+    "copy_btn":    "Copier le texte",
+    "copied":      "Copié !",
+    "back_btn":    "Modifier les informations",
+    "error":       "Une erreur est survenue. Veuillez vérifier vos champs."
   },
   "footer": {
     "tagline":   "Soprano · Artiste Vocale",

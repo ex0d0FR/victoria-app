@@ -1,6 +1,6 @@
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
-import { services } from "@/data/mock";
+import { getServices } from "@/sanity/lib/fetch";
 import { PaymentDetails } from "@/components/sections/PaymentDetails";
 import { ArrowLeft, Shield } from "lucide-react";
 import Link from "next/link";
@@ -25,10 +25,13 @@ export default async function PaymentPage({ params: { locale }, searchParams }: 
 
   // Resolve service details if serviceId is provided
   const serviceId = searchParams?.serviceId;
+  const services = await getServices();
   const matchedService = services.find((s) => s._id === serviceId);
 
   const serviceTitle = matchedService
-    ? matchedService.title[locale as "fr" | "en"] || matchedService.title.fr
+    ? typeof matchedService.title === "string"
+      ? matchedService.title
+      : matchedService.title?.[locale as "fr" | "en"] || matchedService.title?.fr
     : undefined;
 
   const depositAmount = matchedService?.depositAmount 

@@ -92,13 +92,13 @@ export async function Footer({ locale }: { locale: string }) {
             <p>© {year} Victoria Reindale. {t("rights")}</p>
             <span className="text-ink-700">•</span>
             <Link
-              href="/studio"
+              href="/admin"
               className="text-ink-600 hover:text-gold-400 transition-colors inline-flex items-center gap-1 text-xs opacity-75 hover:opacity-100"
-              title="Staff CMS Login"
-              aria-label="Staff Login"
+              title="Administration"
+              aria-label="Administration"
             >
               <Lock size={12} />
-              <span>Staff Login</span>
+              <span>Administration</span>
             </Link>
           </div>
           <p>

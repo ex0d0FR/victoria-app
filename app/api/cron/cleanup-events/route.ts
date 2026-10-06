@@ -4,8 +4,11 @@ import { apiVersion, dataset, projectId } from '@/sanity/env'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET(req: Request) {
-  return handleCleanup(req)
+export async function GET() {
+  return NextResponse.json(
+    { error: 'Method Not Allowed. Cleanup must be triggered via POST.' },
+    { status: 405 }
+  )
 }
 
 export async function POST(req: Request) {
@@ -17,10 +20,22 @@ async function handleCleanup(req: Request) {
   const cronSecret = process.env.CRON_SECRET
   const writeToken = process.env.SANITY_API_WRITE_TOKEN
 
-  // Simple token authentication check
-  const providedToken = authHeader?.replace('Bearer ', '') || new URL(req.url).searchParams.get('key')
+  if (!cronSecret && !writeToken) {
+    return NextResponse.json(
+      { error: 'Server authentication secret is not configured' },
+      { status: 500 }
+    )
+  }
 
-  if (cronSecret && providedToken !== cronSecret && providedToken !== writeToken) {
+  const providedToken = authHeader?.startsWith('Bearer ')
+    ? authHeader.slice(7).trim()
+    : new URL(req.url).searchParams.get('key')?.trim()
+
+  const isAuthorized =
+    (cronSecret && providedToken === cronSecret) ||
+    (writeToken && providedToken === writeToken)
+
+  if (!providedToken || !isAuthorized) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -63,13 +78,19 @@ async function handleCleanup(req: Request) {
     for (const event of pastEvents) {
       let imageDeleted = false
 
-      // 1. Delete associated image asset to spare free tier storage
+      // 1. Delete associated image asset only if not referenced elsewhere
       if (event.assetId) {
         try {
-          await writeClient.delete(event.assetId)
-          imageDeleted = true
+          const refCount = await writeClient.fetch<number>(
+            `count(*[references($assetId)])`,
+            { assetId: event.assetId }
+          )
+          if (refCount <= 1) {
+            await writeClient.delete(event.assetId)
+            imageDeleted = true
+          }
         } catch (imgErr) {
-          console.warn(`Failed to delete asset ${event.assetId}:`, imgErr)
+          console.warn(`Failed to safely check/delete asset ${event.assetId}:`, imgErr)
         }
       }
 
@@ -88,7 +109,7 @@ async function handleCleanup(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: `Cleaned up ${results.length} past event(s) and pruned their assets.`,
+      message: `Cleaned up ${results.length} past event(s) and pruned unreferenced assets.`,
       cleanedEvents: results,
       timestamp: new Date().toISOString(),
     })

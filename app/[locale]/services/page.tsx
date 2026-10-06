@@ -1,7 +1,7 @@
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { services } from "@/data/mock";
+import { getServices, type SanityService } from "@/sanity/lib/fetch";
 import { BookingButton } from "@/components/ui/BookingButton";
 import { Check } from "lucide-react";
 
@@ -12,21 +12,36 @@ export async function generateMetadata({ params: { locale } }: { params: { local
   };
 }
 
-type Service = {
-  _id: string;
-  title: { fr: string; en: string };
-  formation: string;
-  description: { fr: string; en: string };
-  occasions: { fr: string[]; en: string[] };
-  priceFrom?: number;
-  depositAmount?: number;
-  duration: { fr: string; en: string };
-};
+function getLocalizedOccasions(
+  occasions: SanityService["occasions"],
+  locale: string
+): string[] {
+  if (!occasions) return [];
+  if (Array.isArray(occasions)) return occasions;
+  if (typeof occasions === "string") {
+    return occasions.split(/[,;\n]+/).map((str) => str.trim()).filter(Boolean);
+  }
+  const locVal = occasions[locale as "fr" | "en"] ?? occasions.fr ?? occasions.en;
+  if (!locVal) return [];
+  if (Array.isArray(locVal)) return locVal;
+  return locVal.split(/[,;\n]+/).map((str) => str.trim()).filter(Boolean);
+}
+
+function getLocalizedDuration(
+  duration: SanityService["duration"],
+  locale: string
+): string | undefined {
+  if (!duration) return undefined;
+  if (typeof duration === "string") return duration;
+  return duration[locale as "fr" | "en"] ?? duration.fr ?? duration.en;
+}
 
 export default async function ServicesPage({ params: { locale } }: { params: { locale: string } }) {
   unstable_setRequestLocale(locale);
   const t = await getTranslations("services");
   const prefix = locale === "en" ? "/en" : "";
+
+  const services = await getServices();
 
   return (
     <div className="pt-20">
@@ -65,11 +80,11 @@ export default async function ServicesPage({ params: { locale } }: { params: { l
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((s) => {
-                const title    = s.title?.[locale as "fr" | "en"]       ?? s.title?.fr;
-                const desc     = s.description?.[locale as "fr" | "en"] ?? s.description?.fr;
-                const duration = s.duration?.[locale as "fr" | "en"]    ?? s.duration?.fr;
-                const occasions = s.occasions?.[locale as "fr" | "en"]  ?? s.occasions?.fr ?? [];
+              {services.map((s: SanityService) => {
+                const title = s.title?.[locale as "fr" | "en"] ?? s.title?.fr ?? "";
+                const desc = s.description?.[locale as "fr" | "en"] ?? s.description?.fr ?? "";
+                const duration = getLocalizedDuration(s.duration, locale);
+                const occasions = getLocalizedOccasions(s.occasions, locale);
 
                 return (
                   <div key={s._id} className="card-border p-8 flex flex-col">
