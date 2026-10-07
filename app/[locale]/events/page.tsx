@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getEvents, type SanityEvent } from "@/sanity/lib/fetch";
+import { generateMusicEventSchema } from "@/lib/schema";
 import { MapPin, Calendar, Clock, Lock, ExternalLink, Mail, Phone, User } from "lucide-react";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
@@ -16,6 +17,7 @@ export default async function EventsPage({ params: { locale } }: { params: { loc
   const prefix = locale === "en" ? "/en" : "";
 
   const events = await getEvents();
+  const eventSchemas = generateMusicEventSchema(events, locale);
   const now = new Date();
 
   const upcoming = events.filter((e) => new Date(e.date) >= now);
@@ -136,6 +138,12 @@ export default async function EventsPage({ params: { locale } }: { params: { loc
 
   return (
     <div className="pt-20">
+      {eventSchemas.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchemas) }}
+        />
+      )}
       {/* Header */}
       <section className="section-padding bg-cream-50 pb-12">
         <div className="container-wide">

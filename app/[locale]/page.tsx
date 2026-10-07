@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getSettings, getEvents, getServices, getTestimonials, getVideos } from "@/sanity/lib/fetch";
 import { YoutubeEmbed } from "@/components/ui/YoutubeEmbed";
 import { ChevronDown } from "lucide-react";
+import { generatePersonSchema } from "@/lib/schema";
 
 export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
   unstable_setRequestLocale(locale);
@@ -24,9 +25,14 @@ export default async function HomePage({ params: { locale } }: { params: { local
   const heroSubtitle = settings?.heroSubtitle?.[locale as "fr" | "en"] ?? "Soprano · Artiste Vocale";
   const now = new Date();
   const upcomingEvents = (events || []).filter((e) => new Date(e.date) >= now);
+  const personSchema = generatePersonSchema(settings, locale);
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       {/* ── HERO ──────────────────────────────────────────────── */}
       <section className="relative min-h-screen bg-ink-900 flex flex-col lg:flex-row overflow-hidden">
 

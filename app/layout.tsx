@@ -30,6 +30,15 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     alternateLocale: "en_GB",
     siteName: "Victoria Reindale",
+    title: "Victoria Reindale — Soprano · Artiste Vocale",
+    description:
+      "Prestations vocales d'exception pour concerts, cérémonies, mariages et événements privés. Musique sacrée, lyrique et grands airs d'opéra.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Victoria Reindale — Soprano · Artiste Vocale",
+    description:
+      "Prestations vocales d'exception pour concerts, cérémonies, mariages et événements privés.",
   },
 };
 
