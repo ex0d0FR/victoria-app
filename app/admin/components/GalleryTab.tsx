@@ -124,6 +124,9 @@ export function GalleryTab({ initialItems }: { initialItems: any[] }) {
             <div className="space-y-4">
               <div>
                 <label className="label-sm block mb-1">Sélectionner la photo *</label>
+                <p className="text-[11px] text-ink-400 mb-2">
+                  Format conseillé : JPG ou WebP, max 3 Mo (haute résolution pour la grille).
+                </p>
                 <input
                   type="file"
                   required

@@ -8,7 +8,13 @@ import { MapPin, Calendar, Clock, Lock, ExternalLink, Mail, Phone, User } from "
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   unstable_setRequestLocale(locale);
-  return { title: locale === "fr" ? "Événements — Victoria Reindale" : "Events — Victoria Reindale" };
+  const isFr = locale === "fr";
+  return {
+    title: isFr ? "Concerts & Événements à Venir — Victoria Reindale" : "Concerts & Upcoming Events — Victoria Reindale",
+    description: isFr
+      ? "Consultez l'agenda des concerts publics, récitals et prestations de Victoria Reindale. Dates, lieux et billetterie."
+      : "View upcoming public concerts, recitals, and performances by Victoria Reindale. Dates, venues, and ticket access.",
+  };
 }
 
 export default async function EventsPage({ params: { locale } }: { params: { locale: string } }) {

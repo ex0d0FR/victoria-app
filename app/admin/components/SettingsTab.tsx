@@ -158,9 +158,14 @@ export function SettingsTab({ initialSettings }: { initialSettings: SanitySettin
 
       {/* Section 2: Photos */}
       <div className="card-border p-6 bg-white space-y-4">
-        <h3 className="font-serif text-base text-ink-900 border-b border-cream-200 pb-2">
-          2. Photos principales
-        </h3>
+        <div className="border-b border-cream-200 pb-2">
+          <h3 className="font-serif text-base text-ink-900">
+            2. Photos principales
+          </h3>
+          <p className="text-xs text-ink-400 mt-0.5">
+            Format conseillé : JPG ou WebP, max 2 à 3 Mo par image pour garantir un affichage fluide.
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div>

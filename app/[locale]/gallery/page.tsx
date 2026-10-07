@@ -6,7 +6,13 @@ import { YoutubeEmbed } from "@/components/ui/YoutubeEmbed";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   unstable_setRequestLocale(locale);
-  return { title: locale === "fr" ? "Galerie — Victoria Reindale" : "Gallery — Victoria Reindale" };
+  const isFr = locale === "fr";
+  return {
+    title: isFr ? "Galerie Photos & Vidéos — Victoria Reindale" : "Photo & Video Gallery — Victoria Reindale",
+    description: isFr
+      ? "Photographies de récitals, captations live et extraits musicaux de la soprano Victoria Reindale."
+      : "Concert photographs, live recordings, and musical performances by soprano Victoria Reindale.",
+  };
 }
 
 export default async function GalleryPage({ params: { locale } }: { params: { locale: string } }) {

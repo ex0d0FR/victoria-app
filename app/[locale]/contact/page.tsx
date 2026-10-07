@@ -7,7 +7,13 @@ import Link from "next/link";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   unstable_setRequestLocale(locale);
-  return { title: locale === "fr" ? "Contact — Victoria Reindale" : "Contact — Victoria Reindale" };
+  const isFr = locale === "fr";
+  return {
+    title: isFr ? "Contact & Devis — Victoria Reindale Soprano" : "Contact & Booking Inquiry — Victoria Reindale",
+    description: isFr
+      ? "Contactez Victoria Reindale pour vos concerts, mariages ou événements privés. Demandez un devis ou des renseignements."
+      : "Contact Victoria Reindale for concerts, weddings, or private events. Inquire for bookings and custom musical programs.",
+  };
 }
 
 export default async function ContactPage({ params: { locale } }: { params: { locale: string } }) {

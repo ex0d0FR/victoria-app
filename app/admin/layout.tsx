@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowLeft, LogOut, Shield } from 'lucide-react'
+import { ArrowLeft, ExternalLink, LogOut, Shield } from 'lucide-react'
 import { isAuthenticated } from './auth'
 import { logoutAction } from './actions'
 
@@ -39,7 +39,16 @@ export default async function AdminLayout({
           </div>
 
           {isAuthed && (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <a
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-medium text-gold-700 hover:text-gold-900 flex items-center gap-1.5 transition-colors py-1.5 px-3 bg-gold-50 hover:bg-gold-100 rounded border border-gold-200"
+              >
+                <span>Voir le site</span>
+                <ExternalLink size={12} />
+              </a>
               <form action={logoutAction}>
                 <button
                   type="submit"

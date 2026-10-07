@@ -7,8 +7,12 @@ import { Check } from "lucide-react";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   unstable_setRequestLocale(locale);
+  const isFr = locale === "fr";
   return {
-    title: locale === "fr" ? "Services & Formules — Victoria Reindale" : "Services — Victoria Reindale",
+    title: isFr ? "Services & Formules Musicales — Victoria Reindale" : "Services & Musical Packages — Victoria Reindale",
+    description: isFr
+      ? "Découvrez les prestations vocales de Victoria Reindale : cérémonies de mariage, récitals privés, concerts classiques et événements sur mesure."
+      : "Explore Victoria Reindale's vocal performances: wedding ceremonies, private recitals, classical concerts, and tailor-made musical programs.",
   };
 }
 
