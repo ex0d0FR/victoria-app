@@ -1,0 +1,6 @@
+name = "victoria-email-handler"
+main = "src/index.ts"
+compatibility_date = "2026-09-15"
+
+[vars]
+DESTINATION_EMAIL = "victoriareindale@gmail.com"

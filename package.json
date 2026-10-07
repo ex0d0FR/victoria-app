@@ -13,7 +13,8 @@
     "studio": "sanity dev",
     "build:worker": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "preview:worker": "wrangler dev",
-    "deploy:worker": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && wrangler deploy"
+    "deploy:worker": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && wrangler deploy",
+    "deploy:email-worker": "wrangler deploy --config email-worker/wrangler.toml"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.6",
