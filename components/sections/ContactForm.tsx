@@ -30,6 +30,7 @@ export function ContactForm({
 }) {
   const t = useTranslations("contact");
   const isFr = locale === "fr";
+  const activeTurnstileKey = turnstileSiteKey || process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const [status, setStatus] = useState<"idle" | "submitting" | "sent" | "ready">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -273,9 +274,9 @@ export function ContactForm({
       </div>
 
       {/* Cloudflare Turnstile bot protection */}
-      {turnstileSiteKey && (
+      {activeTurnstileKey && (
         <Turnstile
-          siteKey={turnstileSiteKey}
+          siteKey={activeTurnstileKey}
           onVerify={(token) => setTurnstileToken(token)}
           onExpire={() => setTurnstileToken(null)}
           theme="light"
