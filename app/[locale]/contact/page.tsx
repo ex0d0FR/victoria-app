@@ -109,7 +109,11 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
 
           {/* Right: form */}
           <div className="lg:col-span-3">
-            <ContactForm locale={locale} recipientEmail={contactEmail} />
+            <ContactForm
+              locale={locale}
+              recipientEmail={contactEmail}
+              turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+            />
           </div>
         </div>
       </section>
