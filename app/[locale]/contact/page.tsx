@@ -16,6 +16,8 @@ export async function generateMetadata({ params: { locale } }: { params: { local
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function ContactPage({ params: { locale } }: { params: { locale: string } }) {
   unstable_setRequestLocale(locale);
   const t = await getTranslations("contact");

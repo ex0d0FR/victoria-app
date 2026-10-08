@@ -89,15 +89,20 @@ export function ContactForm({
         return;
       }
 
-      // If API rejected or failed validation
+      // If API rejected or failed validation (e.g. Turnstile or missing fields)
       if (json.error) {
         setErrorMessage(json.error);
+        setStatus("idle");
+        return;
       }
     } catch (err) {
       console.warn("Direct contact submission failed, falling back to mailto client:", err);
+      // Fallback to client mailto flow only on network failure
+      setPreparedData({ subject, body, mailtoUrl });
+      setStatus("ready");
+      return;
     }
 
-    // 2. Fallback to client mailto flow
     setPreparedData({ subject, body, mailtoUrl });
     setStatus("ready");
   };
