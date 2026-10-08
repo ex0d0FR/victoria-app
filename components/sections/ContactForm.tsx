@@ -120,7 +120,7 @@ export function ContactForm({
     return (
       <div className="card-border p-8 bg-white space-y-6 animate-fade-up">
         <div className="flex items-center gap-3">
-          <CheckCircle2 size={32} className="text-gold-500 shrink-0" />
+          <CheckCircle2 size={32} className="text-green-500 shrink-0" />
           <div>
             <h3 className="heading-md">
               {isFr ? "Message transmis avec succès !" : "Message sent successfully!"}
