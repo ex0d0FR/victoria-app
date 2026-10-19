@@ -96,8 +96,8 @@ export function ServicesTab({ initialServices }: { initialServices: SanityServic
         _id: res.id,
         title: { fr: titleFr, en: titleEn || titleFr },
         description: { fr: descriptionFr, en: descriptionEn || descriptionFr },
-        occasions: occasionsFr,
-        duration: durationFr,
+        occasions: { fr: occasionsFr, en: occasionsEn || occasionsFr },
+        duration: { fr: durationFr, en: durationEn || durationFr },
         priceFrom: priceFrom === '' ? undefined : Number(priceFrom),
         depositAmount: depositAmount === '' ? undefined : Number(depositAmount),
         order,
@@ -219,13 +219,22 @@ export function ServicesTab({ initialServices }: { initialServices: SanityServic
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div>
               <label className="label-sm block mb-1">Durée (FR)</label>
               <input
                 value={durationFr}
                 onChange={(e) => setDurationFr(e.target.value)}
                 placeholder="Ex. 1 heure"
+                className="form-input text-sm"
+              />
+            </div>
+            <div>
+              <label className="label-sm block mb-1">Durée (EN)</label>
+              <input
+                value={durationEn}
+                onChange={(e) => setDurationEn(e.target.value)}
+                placeholder="Ex. 1 hour"
                 className="form-input text-sm"
               />
             </div>

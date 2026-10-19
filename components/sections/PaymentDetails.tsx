@@ -106,9 +106,11 @@ export function PaymentDetails({ locale, serviceTitle, depositAmount, contactHre
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center animate-fade-up">
             <div className="md:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-50 text-gold-600 text-xs font-semibold uppercase tracking-wider">
-                ⚡ Instant Payment
+                {locale === "fr" ? "⚡ Paiement instantané" : "⚡ Instant Payment"}
               </div>
-              <h3 className="heading-md">Pay instantly with PayPal</h3>
+              <h3 className="heading-md">
+                {locale === "fr" ? "Régler instantanément avec PayPal" : "Pay instantly with PayPal"}
+              </h3>
               <p className="text-sm text-ink-500 leading-relaxed">
                 {t.paypal_desc}
               </p>
@@ -149,7 +151,7 @@ export function PaymentDetails({ locale, serviceTitle, depositAmount, contactHre
               </div>
               <span className="mt-4 text-xs font-semibold text-ink-500 uppercase tracking-widest flex items-center gap-1.5">
                 <ShieldCheck size={14} className="text-green-600" />
-                Secure Scan
+                {locale === "fr" ? "Scan sécurisé" : "Secure Scan"}
               </span>
             </div>
           </div>
@@ -158,7 +160,7 @@ export function PaymentDetails({ locale, serviceTitle, depositAmount, contactHre
           <div className="space-y-8 animate-fade-up">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-50 text-gold-600 text-xs font-semibold uppercase tracking-wider">
-                🏦 Bank Transfer
+                {locale === "fr" ? "🏦 Virement bancaire" : "🏦 Bank Transfer"}
               </div>
               <h3 className="heading-md">{t.method_bank}</h3>
               <p className="text-sm text-ink-500 max-w-2xl leading-relaxed">
@@ -280,16 +282,6 @@ export function PaymentDetails({ locale, serviceTitle, depositAmount, contactHre
                   </span>
                   <span className="text-xs text-ink-500 leading-relaxed block">{bankAddress}</span>
                 </div>
-                <div className="pt-4 border-t border-cream-300">
-                  <span className="block text-[10px] font-semibold text-ink-300 uppercase tracking-wider mb-2">Original Receipt</span>
-                  <a 
-                    href="/images/iban-details.jpg" 
-                    target="_blank" 
-                    className="text-xs text-gold-600 hover:text-gold-700 underline font-medium block"
-                  >
-                    View Original Bank RIB Document
-                  </a>
-                </div>
               </div>
             </div>
           </div>
@@ -307,7 +299,7 @@ export function PaymentDetails({ locale, serviceTitle, depositAmount, contactHre
             href={contactHref}
             className="text-xs font-semibold text-gold-400 hover:text-gold-300 transition-colors inline-flex items-center gap-1.5 group"
           >
-            <span>Proceed to Contact Form</span>
+            <span>{locale === "fr" ? "Accéder au formulaire de contact" : "Proceed to Contact Form"}</span>
             <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
           </a>
         </div>

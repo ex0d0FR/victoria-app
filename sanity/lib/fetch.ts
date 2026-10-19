@@ -88,7 +88,7 @@ export async function getEvents(): Promise<SanityEvent[]> {
       {},
       { next: { revalidate: 30 } }
     )
-    if (data && data.length > 0) return data
+    if (Array.isArray(data)) return data
   } catch (err) {
     console.warn('Failed to fetch events from Sanity, falling back to mock data:', err)
   }
@@ -102,10 +102,12 @@ export async function getSettings(): Promise<SanitySettings> {
       {},
       { next: { revalidate: 60 } }
     )
-    if (data && (data.heroTitle || data.biography || data.heroImage)) {
+    if (data && (data.heroTitle || data.biography || data.heroImage || data.email)) {
       return {
         ...mockData.settings,
         ...data,
+        heroImage: data.heroImage || mockData.settings.heroImage,
+        bioPhoto: data.bioPhoto || mockData.settings.bioPhoto,
       }
     }
   } catch (err) {

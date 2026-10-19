@@ -31,6 +31,7 @@ export const galleryItem = defineType({
         list: [
           { title: 'Portrait', value: 'portrait' },
           { title: 'Concert & Scene', value: 'concert' },
+          { title: 'Wedding & Ceremony', value: 'wedding' },
           { title: 'Backstage & Rehearsal', value: 'backstage' },
         ],
         layout: 'radio',

@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: 'events', changeFrequency: 'daily' as const, priority: 0.9 },
     { path: 'gallery', changeFrequency: 'monthly' as const, priority: 0.8 },
     { path: 'contact', changeFrequency: 'monthly' as const, priority: 0.8 },
-    { path: 'payment', changeFrequency: 'yearly' as const, priority: 0.5 },
   ]
 
   const sitemapEntries: MetadataRoute.Sitemap = []

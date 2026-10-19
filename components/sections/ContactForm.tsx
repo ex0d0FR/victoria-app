@@ -35,6 +35,7 @@ export function ContactForm({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0);
   const [preparedData, setPreparedData] = useState<{
     subject: string;
     body: string;
@@ -85,6 +86,8 @@ export function ContactForm({
 
       if (res.ok && json.success) {
         setStatus("sent");
+        setTurnstileToken(null);
+        setTurnstileResetKey((k) => k + 1);
         reset();
         return;
       }
@@ -92,6 +95,8 @@ export function ContactForm({
       // If API rejected or failed validation (e.g. Turnstile or missing fields)
       if (json.error) {
         setErrorMessage(json.error);
+        setTurnstileToken(null);
+        setTurnstileResetKey((k) => k + 1);
         setStatus("idle");
         return;
       }
@@ -100,11 +105,17 @@ export function ContactForm({
       // Fallback to client mailto flow only on network failure
       setPreparedData({ subject, body, mailtoUrl });
       setStatus("ready");
+      if (typeof window !== "undefined") {
+        window.location.href = mailtoUrl;
+      }
       return;
     }
 
     setPreparedData({ subject, body, mailtoUrl });
     setStatus("ready");
+    if (typeof window !== "undefined") {
+      window.location.href = mailtoUrl;
+    }
   };
 
   const handleCopy = () => {
@@ -136,7 +147,11 @@ export function ContactForm({
         <div className="pt-4 border-t border-cream-200">
           <button
             type="button"
-            onClick={() => setStatus("idle")}
+            onClick={() => {
+              setTurnstileToken(null);
+              setTurnstileResetKey((k) => k + 1);
+              setStatus("idle");
+            }}
             className="text-xs text-gold-600 hover:text-gold-700 font-medium inline-flex items-center gap-1 transition-colors"
           >
             <span>{isFr ? "Envoyer un autre message" : "Send another message"}</span>
@@ -281,6 +296,7 @@ export function ContactForm({
       {/* Cloudflare Turnstile bot protection */}
       {activeTurnstileKey && (
         <Turnstile
+          key={turnstileResetKey}
           siteKey={activeTurnstileKey}
           onVerify={(token) => setTurnstileToken(token)}
           onExpire={() => setTurnstileToken(null)}

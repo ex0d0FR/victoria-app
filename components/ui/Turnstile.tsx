@@ -33,6 +33,15 @@ declare global {
 export function Turnstile({ siteKey, onVerify, onError, onExpire, theme = "light" }: TurnstileProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
+  const onVerifyRef = useRef(onVerify);
+  const onErrorRef = useRef(onError);
+  const onExpireRef = useRef(onExpire);
+
+  useEffect(() => {
+    onVerifyRef.current = onVerify;
+    onErrorRef.current = onError;
+    onExpireRef.current = onExpire;
+  }, [onVerify, onError, onExpire]);
 
   useEffect(() => {
     if (!siteKey) return;
@@ -45,9 +54,9 @@ export function Turnstile({ siteKey, onVerify, onError, onExpire, theme = "light
       if (window.turnstile && containerRef.current && !widgetIdRef.current) {
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
-          callback: (token: string) => onVerify(token),
-          "error-callback": () => onError?.(),
-          "expired-callback": () => onExpire?.(),
+          callback: (token: string) => onVerifyRef.current(token),
+          "error-callback": () => onErrorRef.current?.(),
+          "expired-callback": () => onExpireRef.current?.(),
           theme,
         });
       }
@@ -65,15 +74,20 @@ export function Turnstile({ siteKey, onVerify, onError, onExpire, theme = "light
       document.head.appendChild(script);
     } else if (window.turnstile) {
       renderWidget();
+    } else {
+      script.addEventListener("load", renderWidget);
     }
 
     return () => {
+      if (script) {
+        script.removeEventListener("load", renderWidget);
+      }
       if (widgetIdRef.current && window.turnstile) {
         window.turnstile.remove(widgetIdRef.current);
         widgetIdRef.current = null;
       }
     };
-  }, [siteKey, onVerify, onError, onExpire, theme]);
+  }, [siteKey, theme]);
 
   return <div ref={containerRef} className="my-3 min-h-[65px]" />;
 }

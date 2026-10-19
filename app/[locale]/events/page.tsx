@@ -29,17 +29,33 @@ export default async function EventsPage({ params: { locale } }: { params: { loc
   const upcoming = events.filter((e) => new Date(e.date) >= now);
   const past = events.filter((e) => new Date(e.date) < now).reverse();
 
+  const TZ = "Europe/Paris";
+
   const formatTime = (dateStr: string) => {
     const d = new Date(dateStr);
     return d.toLocaleTimeString(locale === "fr" ? "fr-FR" : "en-GB", {
       hour: "2-digit",
       minute: "2-digit",
+      timeZone: TZ,
     });
   };
 
   const renderEvent = (ev: SanityEvent) => {
     const evDate = new Date(ev.date);
-    const hasTime = evDate.getHours() !== 0 || evDate.getMinutes() !== 0;
+    const timeStr = formatTime(ev.date);
+    const hasTime = timeStr !== "00:00";
+    const dayStr = evDate.toLocaleDateString("fr-FR", { day: "2-digit", timeZone: TZ });
+    const monthStr = evDate.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-GB", {
+      month: "short",
+      timeZone: TZ,
+    });
+    const yearStr = evDate.toLocaleDateString("fr-FR", { year: "numeric", timeZone: TZ });
+
+    const venueParts = ev.venue
+      ? ev.isPrivate
+        ? [ev.venue.city, ev.venue.country].filter(Boolean)
+        : [ev.venue.name, ev.venue.address, ev.venue.city, ev.venue.country].filter(Boolean)
+      : [];
 
     return (
       <article key={ev._id} className="grid grid-cols-1 sm:grid-cols-4 gap-6 py-8 border-b border-cream-300 last:border-0">
@@ -47,18 +63,18 @@ export default async function EventsPage({ params: { locale } }: { params: { loc
         <div className="sm:col-span-1 flex sm:flex-col items-center sm:items-start gap-3">
           <div className="text-center sm:text-left">
             <p className="font-serif text-4xl text-gold-600 leading-none">
-              {evDate.getDate().toString().padStart(2, "0")}
+              {dayStr}
             </p>
             <p className="text-sm text-ink-500 uppercase tracking-wider mt-1">
-              {evDate.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-GB", { month: "short" })}
+              {monthStr}
             </p>
             <p className="text-xs text-ink-400">
-              {evDate.getFullYear()}
+              {yearStr}
             </p>
             {hasTime && (
               <p className="flex items-center gap-1 text-xs text-gold-700 mt-2">
                 <Clock size={12} />
-                <span>{formatTime(ev.date)}</span>
+                <span>{timeStr}</span>
               </p>
             )}
           </div>
@@ -77,12 +93,10 @@ export default async function EventsPage({ params: { locale } }: { params: { loc
             )}
           </div>
 
-          {ev.venue && (
+          {venueParts.length > 0 && (
             <div className="flex items-start gap-1.5 text-sm text-ink-500 mb-3">
               <MapPin size={14} className="text-gold-500 shrink-0 mt-0.5" />
-              <span>
-                {[ev.venue.name, ev.venue.address, ev.venue.city, ev.venue.country].filter(Boolean).join(" · ")}
-              </span>
+              <span>{venueParts.join(" · ")}</span>
             </div>
           )}
 

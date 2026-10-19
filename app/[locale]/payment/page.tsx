@@ -9,6 +9,10 @@ export async function generateMetadata({ params: { locale } }: { params: { local
   unstable_setRequestLocale(locale);
   return {
     title: locale === "fr" ? "Paiement Sécurisé — Victoria Reindale" : "Secure Payment — Victoria Reindale",
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 
@@ -84,7 +88,7 @@ export default async function PaymentPage({ params: { locale }, searchParams }: 
             <h1 className="heading-display">{t("title")}</h1>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 text-green-700 text-xs font-medium self-start md:self-auto">
               <Shield size={14} />
-              SSL 256-bit Encrypted
+              {locale === "fr" ? "Chiffrement SSL 256-bit" : "SSL 256-bit Encrypted"}
             </div>
           </div>
         </div>

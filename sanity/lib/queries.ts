@@ -96,7 +96,8 @@ export const servicesQuery = groq`
     occasions,
     duration,
     priceFrom,
-    depositAmount
+    depositAmount,
+    order
   }
 `
 

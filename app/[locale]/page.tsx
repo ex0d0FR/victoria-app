@@ -1,10 +1,24 @@
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getSettings, getEvents, getServices, getTestimonials, getVideos } from "@/sanity/lib/fetch";
 import { YoutubeEmbed } from "@/components/ui/YoutubeEmbed";
 import { ChevronDown } from "lucide-react";
 import { generatePersonSchema } from "@/lib/schema";
+
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  unstable_setRequestLocale(locale);
+  const isFr = locale === "fr";
+  return {
+    title: isFr
+      ? "Victoria Reindale — Soprano · Artiste Vocale"
+      : "Victoria Reindale — Soprano · Vocal Artist",
+    description: isFr
+      ? "Victoria Reindale est une soprano professionnelle proposant des prestations musicales pour cérémonies, concerts privés et événements spéciaux."
+      : "Victoria Reindale is a professional soprano offering refined musical performances for ceremonies, private concerts, and special events.",
+  };
+}
 
 export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
   unstable_setRequestLocale(locale);
@@ -24,7 +38,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
   const heroTitle = settings?.heroTitle?.[locale as "fr" | "en"] ?? "Victoria Reindale";
   const heroSubtitle = settings?.heroSubtitle?.[locale as "fr" | "en"] ?? "Soprano · Artiste Vocale";
   const now = new Date();
-  const upcomingEvents = (events || []).filter((e) => new Date(e.date) >= now);
+  const upcomingEvents = (events || []).filter((e) => new Date(e.date) >= now && !e.isPrivate);
   const personSchema = generatePersonSchema(settings, locale);
 
   return (
@@ -102,7 +116,9 @@ export default async function HomePage({ params: { locale } }: { params: { local
                 <div key={ev._id} className="flex items-center gap-3 shrink-0">
                   <span className="text-gold-600 font-serif text-sm font-medium">
                     {new Date(ev.date).toLocaleDateString(locale === "fr" ? "fr-FR" : "en-GB", {
-                      day: "2-digit", month: "short",
+                      day: "2-digit",
+                      month: "short",
+                      timeZone: "Europe/Paris",
                     })}
                   </span>
                   <span className="text-sm text-ink-700">

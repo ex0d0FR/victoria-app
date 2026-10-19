@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import clsx from "clsx";
@@ -25,10 +25,36 @@ export function GalleryGrid({ items, locale }: { items: GalleryItem[]; locale: s
     return map[cat] ?? cat;
   };
 
-  const openLightbox  = (idx: number) => { setLightboxIndex(idx); document.body.style.overflow = "hidden"; };
-  const closeLightbox = () => { setLightboxIndex(null); document.body.style.overflow = ""; };
-  const prevImg       = () => setLightboxIndex((i) => (i! - 1 + filtered.length) % filtered.length);
-  const nextImg       = () => setLightboxIndex((i) => (i! + 1) % filtered.length);
+  const openLightbox  = (idx: number) => setLightboxIndex(idx);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const prevImg       = useCallback(() => {
+    if (filtered.length === 0) return;
+    setLightboxIndex((i) => (i !== null ? (i - 1 + filtered.length) % filtered.length : null));
+  }, [filtered.length]);
+  const nextImg       = useCallback(() => {
+    if (filtered.length === 0) return;
+    setLightboxIndex((i) => (i !== null ? (i + 1) % filtered.length : null));
+  }, [filtered.length]);
+
+  useEffect(() => {
+    if (lightboxIndex === null) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      else if (e.key === "ArrowLeft") prevImg();
+      else if (e.key === "ArrowRight") nextImg();
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [lightboxIndex, closeLightbox, prevImg, nextImg]);
 
   return (
     <>

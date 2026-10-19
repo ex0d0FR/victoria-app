@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
@@ -17,11 +17,14 @@ function getHref(key: string, locale: string) {
 }
 
 export function Header({ locale }: { locale: string }) {
-  const t = usePathname();
   const tNav = useTranslations("nav");
   const [scrolled, setScrolled]   = useState(false);
   const [menuOpen, setMenuOpen]   = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);

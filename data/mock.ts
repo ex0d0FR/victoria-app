@@ -9,6 +9,10 @@ export const settings = {
   },
   heroImage: "/images/victoria-main.png",
   bioPhoto: "/images/victoria-gallery-2.png",
+  biography: {
+    fr: "Victoria Reindale est une soprano professionnelle dont la voix lyrique légère enchante cérémonies, concerts privés et événements d'exception. Formée au conservatoire, elle propose des formations allant du solo soprano jusqu'à l'ensemble vocal SATB, s'adaptant à chaque occasion avec raffinement.",
+    en: "Victoria Reindale is a professional soprano whose light lyric voice enchants ceremonies, private concerts, and exceptional events. Trained at the conservatory, she offers formations ranging from solo soprano to SATB vocal ensemble, adapting to each occasion with refinement.",
+  },
   biographyFr: "Victoria Reindale est une soprano professionnelle dont la voix lyrique légère enchante cérémonies, concerts privés et événements d'exception. Formée au conservatoire, elle propose des formations allant du solo soprano jusqu'à l'ensemble vocal SATB, s'adaptant à chaque occasion avec raffinement.",
   biographyEn: "Victoria Reindale is a professional soprano whose light lyric voice enchants ceremonies, private concerts, and exceptional events. Trained at the conservatory, she offers formations ranging from solo soprano to SATB vocal ensemble, adapting to each occasion with refinement.",
   email: "contact@victoriareindale.com",

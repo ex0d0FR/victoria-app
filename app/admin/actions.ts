@@ -4,6 +4,15 @@ import { revalidatePath } from 'next/cache'
 import { getWriteClient } from '@/sanity/lib/writeClient'
 import { verifyAndCreateSession, clearSession, isAuthenticated } from './auth'
 
+const ALLOWED_IMAGE_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/avif',
+])
+const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024 // 10 MB
+
 async function assertAuth() {
   const authed = await isAuthenticated()
   if (!authed) {
@@ -15,12 +24,28 @@ function revalidateAllPages() {
   revalidatePath('/', 'layout')
 }
 
+async function safelyDeleteAssetIfUnreferenced(client: ReturnType<typeof getWriteClient>, assetId?: string | null) {
+  if (!assetId) return
+  try {
+    const refCount = await client.fetch<number>(
+      `count(*[references($assetId)])`,
+      { assetId }
+    )
+    if (refCount <= 0) {
+      await client.delete(assetId)
+    }
+  } catch (err) {
+    console.warn(`Failed to clean up asset ${assetId}:`, err)
+  }
+}
+
 // ── Authentication ──────────────────────────────────────────────────────────
 
 export async function loginAction(password: string): Promise<{ success: boolean; error?: string }> {
   try {
     const success = await verifyAndCreateSession(password)
     if (!success) {
+      await new Promise((r) => setTimeout(r, 800))
       return { success: false, error: 'Mot de passe incorrect.' }
     }
     return { success: true }
@@ -41,6 +66,20 @@ export async function uploadImageAction(formData: FormData): Promise<{ success: 
     const file = formData.get('file') as File | null
     if (!file || file.size === 0) {
       return { success: false, error: 'Aucun fichier sélectionné.' }
+    }
+
+    if (!ALLOWED_IMAGE_TYPES.has(file.type)) {
+      return {
+        success: false,
+        error: 'Format de fichier non pris en charge. Utilisez JPG, PNG, WebP, GIF ou AVIF.',
+      }
+    }
+
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      return {
+        success: false,
+        error: 'Le fichier est trop volumineux (maximum 10 Mo).',
+      }
     }
 
     const client = getWriteClient()
@@ -125,7 +164,12 @@ export async function deleteEventAction(id: string): Promise<{ success: boolean;
   try {
     await assertAuth()
     const client = getWriteClient()
+    const existing = await client.fetch<{ assetId?: string } | null>(
+      `*[_id == $id][0]{ "assetId": image.asset._ref }`,
+      { id }
+    )
     await client.delete(id)
+    await safelyDeleteAssetIfUnreferenced(client, existing?.assetId)
     revalidateAllPages()
     return { success: true }
   } catch (err: any) {
@@ -211,6 +255,13 @@ export async function updateSettingsAction(data: {
     await assertAuth()
     const client = getWriteClient()
 
+    const previousSettings = await client.fetch<{
+      oldHeroAssetId?: string
+      oldBioAssetId?: string
+    } | null>(
+      `*[_id == "settings"][0]{ "oldHeroAssetId": heroImage.asset._ref, "oldBioAssetId": bioPhoto.asset._ref }`
+    )
+
     const patch: any = {
       heroTitle: { fr: data.heroTitleFr || '', en: data.heroTitleEn || '' },
       heroSubtitle: { fr: data.heroSubtitleFr || '', en: data.heroSubtitleEn || '' },
@@ -236,11 +287,19 @@ export async function updateSettingsAction(data: {
       }
     }
 
-    await client.createOrReplace({
+    await client.createIfNotExists({
       _id: 'settings',
       _type: 'settings',
-      ...patch,
     })
+
+    await client.patch('settings').set(patch).commit()
+
+    if (data.heroImageAssetId && previousSettings?.oldHeroAssetId && previousSettings.oldHeroAssetId !== data.heroImageAssetId) {
+      await safelyDeleteAssetIfUnreferenced(client, previousSettings.oldHeroAssetId)
+    }
+    if (data.bioPhotoAssetId && previousSettings?.oldBioAssetId && previousSettings.oldBioAssetId !== data.bioPhotoAssetId) {
+      await safelyDeleteAssetIfUnreferenced(client, previousSettings.oldBioAssetId)
+    }
 
     revalidateAllPages()
     return { success: true }
@@ -288,7 +347,12 @@ export async function deleteGalleryItemAction(id: string): Promise<{ success: bo
   try {
     await assertAuth()
     const client = getWriteClient()
+    const existing = await client.fetch<{ assetId?: string } | null>(
+      `*[_id == $id][0]{ "assetId": image.asset._ref }`,
+      { id }
+    )
     await client.delete(id)
+    await safelyDeleteAssetIfUnreferenced(client, existing?.assetId)
     revalidateAllPages()
     return { success: true }
   } catch (err: any) {

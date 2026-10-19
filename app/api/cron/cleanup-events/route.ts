@@ -1,5 +1,6 @@
 import { createClient } from 'next-sanity'
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { apiVersion, dataset, projectId } from '@/sanity/env'
 
 export const dynamic = 'force-dynamic'
@@ -20,22 +21,18 @@ async function handleCleanup(req: Request) {
   const cronSecret = process.env.CRON_SECRET
   const writeToken = process.env.SANITY_API_WRITE_TOKEN
 
-  if (!cronSecret && !writeToken) {
+  if (!cronSecret) {
     return NextResponse.json(
-      { error: 'Server authentication secret is not configured' },
+      { error: 'Server CRON_SECRET is not configured' },
       { status: 500 }
     )
   }
 
   const providedToken = authHeader?.startsWith('Bearer ')
     ? authHeader.slice(7).trim()
-    : new URL(req.url).searchParams.get('key')?.trim()
+    : null
 
-  const isAuthorized =
-    (cronSecret && providedToken === cronSecret) ||
-    (writeToken && providedToken === writeToken)
-
-  if (!providedToken || !isAuthorized) {
+  if (!providedToken || providedToken !== cronSecret) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -105,6 +102,10 @@ async function handleCleanup(req: Request) {
       } catch (docErr) {
         console.error(`Failed to delete event document ${event._id}:`, docErr)
       }
+    }
+
+    if (results.length > 0) {
+      revalidatePath('/', 'layout')
     }
 
     return NextResponse.json({
